@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Year and Week Chart</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 2px;
+        }
+        .header {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+        .highlight {
+            background-color: #90ee90; /* Light green color */
+        }
+    </style>
+</head>
+<body>
+    <h2>Year and Week Chart</h2>
+    <table id="yearWeekChart">
+        <tr>
+            <!-- Week Headers -->
+            <td class="header">Year\Week</td>
+            <!-- Generate week headers -->
+            <script>
+                for (let i = 1; i <= 54; i++) {
+                    document.write('<td class="header">' + i + '</td>');
+                }
+            </script>
+        </tr>
+
+        <!-- Generate year rows -->
+        <script>
+            for (let year = 1; year <= 100; year++) {
+                document.write('<tr><td class="header">' + year + '</td>');
+                for (let week = 1; week <= 54; week++) {
+                    document.write('<td id="year' + year + 'week' + week + '"></td>');
+                }
+                document.write('</tr>');
+            }
+        </script>
+    </table>
+
+    <script>
+        // Function to calculate age in years and weeks
+        function calculateAge(birthDate) {
+            var currentDate = new Date();
+            var birthDateObj = new Date(birthDate);
+
+            var ageYears = currentDate.getFullYear() - birthDateObj.getFullYear();
+            var ageWeeks = Math.floor(((currentDate - birthDateObj) / (1000 * 60 * 60 * 24)) / 7);
+
+            if (currentDate.getMonth() < birthDateObj.getMonth() || 
+                (currentDate.getMonth() === birthDateObj.getMonth() && currentDate.getDate() < birthDateObj.getDate())) {
+                ageYears--;
+            }
+
+            return [ageYears, ageWeeks];
+        }
+
+        // Example birthdate - replace with actual user input
+        var userBirthDate = '1990-01-01'; // Example birthdate
+        var age = calculateAge(userBirthDate);
+
+        // Highlight cells based on age
+        for (let year = 1; year <= age[0]; year++) {
+            for (let week = 1; week <= 54; week++) {
+                if (year < age[0] || week <= age[1] % 54) {
+                    document.getElementById('year' + year + 'week' + week).classList.add('highlight');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
